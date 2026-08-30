@@ -1,1 +1,33 @@
-MANIFEST PLACEHOLDER
+{
+  "name": "📖 Meu Diário de Cada Dia",
+  "short_name": "Meu Diário",
+  "description": "Um aplicativo de diário privado, moderno e 100% offline, projetado para registrar memórias, reflexões e momentos marcantes com total privacidade.",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#F5F2EB",
+  "theme_color": "#8B6F47",
+  "icons": [
+    {
+      "src": "logo.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "logo.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    }
+  ],
+  "categories": ["productivity", "lifestyle"],
+  "screenshots": [
+    {
+      "src": "logo.png",
+      "sizes": "540x720",
+      "type": "image/png"
+    }
+  ]
+}
