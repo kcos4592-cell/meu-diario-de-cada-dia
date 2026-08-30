@@ -9,14 +9,10 @@
   <meta name="theme-color" content="#118A8A">
 </head>
 <body>
-  <!-- O Diário de cada dia - Aplicativo Oficial do Grupo de Jovens -->
-  <!-- Interface Minimalista, Moderna e Limpa com armazenamento local seguro via IndexedDB -->
-  <!-- O aplicativo funciona de forma 100% offline através da tecnologia PWA (Progressive Web App) -->
 
   <div class="app-container">
     <button id="pwa-install-btn">📥 Adicionar à Tela Inicial</button>
 
-    <!-- Topo Perfil -->
     <div class="profile-card">
       <div class="profile-pic-container" id="profile-trigger">
         <img id="profile-img" src="" style="display:none;" alt="Foto de perfil">
@@ -26,11 +22,9 @@
       <div class="profile-info">
         <input type="text" id="profile-name" placeholder="Seu nome...">
       </div>
-      <!-- Logo do App SVG -->
       <svg class="app-logo-mini" viewBox="0 0 512 512"><rect width='512' height='512' rx='120' fill='%23118A8A'/><path d='M130 180 c0-40 20-60 60-60 h150 c40 0 60 20 60 60 v180 c0 40-20 60-60 60 h-150 c-40 0-60-20-60-60 z' fill='none' stroke='%23FAD485' stroke-width='16'/><path d='M256 160 Q 320 220 380 220' fill='none' stroke='%23F99E82' stroke-width='18' stroke-linecap='round'/><path d='M300 170 L 220 340' fill='none' stroke='%23FEF6E4' stroke-width='22' stroke-linecap='round'/><path d='M220 340 L 205 355 L 210 330 Z' fill='%23FAD485'/></svg>
     </div>
 
-    <!-- Criar Memória -->
     <div class="editor-card">
       <h3>Nova Memória</h3>
       <input type="text" id="title-input" class="input-field" placeholder="Título do momento">
@@ -46,23 +40,15 @@
         <button class="mood-btn" data-mood="☁️">☁️</button>
       </div>
 
-      <label class="media-upload-label" for="memory-file">
-        📷 Anexar Foto do Dia
-      </label>
+      <label class="media-upload-label" for="memory-file">📷 Anexar Foto do Dia</label>
       <input type="file" id="memory-file" accept="image/*">
       <img id="image-preview" src="" alt="Pré-visualização">
 
       <button class="btn-submit" id="save-btn">Guardar Memória</button>
     </div>
 
-    <!-- Feed de Memórias -->
     <div class="feed-container" id="feed"></div>
   </div>
-
-  <footer style="display:none;">
-    <p>O Diário de cada dia - Todos os direitos reservados.</p>
-    <p>Privacidade total: os arquivos e mídias salvos ficam retidos apenas no IndexedDB local do navegador do usuário.</p>
-  </footer>
 
   <script src="app.js"></script>
 </body>
