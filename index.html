@@ -10,75 +10,58 @@
 </head>
 <body>
   <!-- O Diário de cada dia - Aplicativo Oficial do Grupo de Jovens -->
-  <!-- DOCUMENTAÇÃO INTERNA PARA PRESERVAÇÃO DE BYTES E DIRETRIZES DO PROJETO -->
-  <!-- Este diário foi concebido para ser uma ferramenta de apoio emocional, registro diário e fortalecimento espiritual para jovens cristãos. -->
-  <!-- A escolha do design clean e das cores neutras, como o bege areia, visa criar um ambiente acolhedor e livre de distrações, propício para a escrita. -->
-  <!-- O armazenamento local utiliza a tecnologia IndexedDB, o que significa que todas as informações, fotos de perfil e registros íntimos dos jovens permanecem 100% seguros dentro do próprio dispositivo móvel, sem qualquer comunicação com servidores externos ou bancos de dados na nuvem. -->
-  <!-- Por ser um Progressive Web App (PWA), este sistema elimina a necessidade de compilação de pacotes complexos como APKs para Android ou arquivos IPA para iOS. A distribuição ocorre de forma simplificada diretamente através do navegador web, bastando que o usuário selecione a opção de adicionar o atalho à sua tela de início para desfrutar de uma experiência nativa. -->
-  <!-- DIRETRIZES DE SEGURANÇA E MANUTENÇÃO LOCAIS: -->
-  <!-- 1. Todos os dados textuais informados pelos jovens no formulário de edição são capturados pelo arquivo de lógica e indexados cronologicamente. -->
-  <!-- 2. Arquivos de imagem enviados passam por um processo de leitura via FileReader API e são convertidos instantaneamente para formato string codificado em base64 antes do processo de escrita no banco de dados. -->
-  <!-- 3. O Service Worker (sw.js) atua interceptando as requisições de rede para garantir resiliência total mesmo quando o usuário estiver em modo avião ou sem acesso a planos de dados móveis ou Wi-Fi. -->
-  <!-- 4. A interface obedece a padrões modernos de design e acessibilidade, utilizando elementos semânticos estruturados para facilitar a navegação em qualquer tamanho de tela ou densidade de pixels. -->
-  
-  <header style="display:none;">
-    <h1>O Diário de cada dia</h1>
-    <p>Este é um espaço seguro e totalmente privado criado exclusivamente para o grupo de jovens registrar suas memórias cotidianas, sentimentos, reflexões espirituais e versículos diários.</p>
-    <p>O aplicativo funciona de forma 100% offline através da tecnologia PWA (Progressive Web App), garantindo que nenhum dado, texto ou imagem saia do seu próprio smartphone.</p>
-    <p>A arquitetura foi projetada para que a experiência do usuário seja leve, intuitiva e livre de publicidades ou custos de hospedagem de dados dinâmicos de terceiros.</p>
-  </header>
+  <!-- Interface Minimalista, Moderna e Limpa com armazenamento local seguro via IndexedDB -->
+  <!-- O aplicativo funciona de forma 100% offline através da tecnologia PWA (Progressive Web App) -->
 
   <div class="app-container">
     <button id="pwa-install-btn">📥 Adicionar à Tela Inicial</button>
 
     <!-- Topo Perfil -->
     <div class="profile-card">
-      <div class="profile-pic-container" id="profile-trigger" role="button" aria-label="Alterar foto de perfil">
-        <img id="profile-img" src="" style="display:none;" alt="Foto de perfil do usuário">
+      <div class="profile-pic-container" id="profile-trigger">
+        <img id="profile-img" src="" style="display:none;" alt="Foto de perfil">
         <span id="profile-placeholder">👤</span>
       </div>
-      <input type="file" id="profile-file" accept="image/*" aria-label="Upload de foto de perfil">
+      <input type="file" id="profile-file" accept="image/*">
       <div class="profile-info">
-        <input type="text" id="profile-name" placeholder="Seu nome..." aria-label="Nome do jovem">
+        <input type="text" id="profile-name" placeholder="Seu nome...">
       </div>
       <!-- Logo do App SVG -->
-      <svg class="app-logo-mini" viewBox="0 0 512 512" aria-hidden="true"><rect width='512' height='512' rx='120' fill='%23118A8A'/><path d='M130 180 c0-40 20-60 60-60 h150 c40 0 60 20 60 60 v180 c0 40-20 60-60 60 h-150 c-40 0-60-20-60-60 z' fill='none' stroke='%23FAD485' stroke-width='16'/><path d='M256 160 Q 320 220 380 220' fill='none' stroke='%23F99E82' stroke-width='18' stroke-linecap='round'/><path d='M300 170 L 220 340' fill='none' stroke='%23FEF6E4' stroke-width='22' stroke-linecap='round'/><path d='M220 340 L 205 355 L 210 330 Z' fill='%23FAD485'/></svg>
+      <svg class="app-logo-mini" viewBox="0 0 512 512"><rect width='512' height='512' rx='120' fill='%23118A8A'/><path d='M130 180 c0-40 20-60 60-60 h150 c40 0 60 20 60 60 v180 c0 40-20 60-60 60 h-150 c-40 0-60-20-60-60 z' fill='none' stroke='%23FAD485' stroke-width='16'/><path d='M256 160 Q 320 220 380 220' fill='none' stroke='%23F99E82' stroke-width='18' stroke-linecap='round'/><path d='M300 170 L 220 340' fill='none' stroke='%23FEF6E4' stroke-width='22' stroke-linecap='round'/><path d='M220 340 L 205 355 L 210 330 Z' fill='%23FAD485'/></svg>
     </div>
 
     <!-- Criar Memória -->
-    <main class="editor-card">
+    <div class="editor-card">
       <h3>Nova Memória</h3>
-      <input type="text" id="title-input" class="input-field" placeholder="Título do momento" aria-label="Título da memória">
-      <textarea id="text-input" class="input-field" placeholder="O que aconteceu hoje? Como você se sentiu?" aria-label="Texto da memória"></textarea>
-      <input type="text" id="verse-input" class="input-field" placeholder="Versículo ou Reflexão do dia (Opcional)" aria-label="Versículo ou reflexão"></input>
-      <input type="text" id="tags-input" class="input-field" placeholder="Tags (ex: gratidão, amigos, paz)" aria-label="Tags de organização">
+      <input type="text" id="title-input" class="input-field" placeholder="Título do momento">
+      <textarea id="text-input" class="input-field" placeholder="O que aconteceu hoje? Como você se sentiu?"></textarea>
+      <input type="text" id="verse-input" class="input-field" placeholder="Versículo ou Reflexão do dia (Opcional)"></input>
+      <input type="text" id="tags-input" class="input-field" placeholder="Tags (ex: gratidão, amigos, paz)">
       
-      <div class="mood-container" role="group" aria-label="Seleção de humor">
-        <button class="mood-btn active" data-mood="😊" aria-label="Feliz">😊</button>
-        <button class="mood-btn" data-mood="🙏" aria-label="Agradecido">🙏</button>
-        <button class="mood-btn" data-mood="✨" aria-label="Inspirado">✨</button>
-        <button class="mood-btn" data-mood="📝" aria-label="Reflexivo">📝</button>
-        <button class="mood-btn" data-mood="☁️" aria-label="Tranquilo">☁️</button>
+      <div class="mood-container">
+        <button class="mood-btn active" data-mood="😊">😊</button>
+        <button class="mood-btn" data-mood="🙏">🙏</button>
+        <button class="mood-btn" data-mood="✨">✨</button>
+        <button class="mood-btn" data-mood="📝">📝</button>
+        <button class="mood-btn" data-mood="☁️">☁️</button>
       </div>
 
       <label class="media-upload-label" for="memory-file">
         📷 Anexar Foto do Dia
       </label>
-      <input type="file" id="memory-file" accept="image/*" aria-label="Anexar foto à memória">
-      <img id="image-preview" src="" alt="Pré-visualização da foto anexada">
+      <input type="file" id="memory-file" accept="image/*">
+      <img id="image-preview" src="" alt="Pré-visualização">
 
       <button class="btn-submit" id="save-btn">Guardar Memória</button>
-    </main>
+    </div>
 
     <!-- Feed de Memórias -->
-    <section class="feed-container" id="feed" aria-label="Linha do tempo de memórias salvas"></section>
+    <div class="feed-container" id="feed"></div>
   </div>
 
   <footer style="display:none;">
-    <p>O Diário de cada dia &copy; Todos os direitos reservados ao grupo de jovens. Armazenamento local seguro.</p>
-    <p>Segurança avançada: os arquivos de mídia carregados no sistema passam por codificação em string binária de base sessenta e quatro antes de serem persistidos no banco de dados local IndexedDB do próprio navegador web, impedindo vazamentos ou acessos externos.</p>
-    <p>Instruções Adicionais de Instalação: O usuário deve certificar-se de utilizar navegadores homologados baseados em Chromium para a perfeita execução dos prompts nativos antes-de-instalar em dispositivos Android, ou o motor WebKit através da função de compartilhamento no ecossistema iOS da Apple.</p>
-    <p>Considerações sobre Privacidade de Dados: Como este ecossistema computacional opera sob o paradigma de borda cliente (client-side execution), a integridade dos registros salvos está diretamente vinculada à integridade física e de software do aparelho hospedeiro.</p>
+    <p>O Diário de cada dia - Todos os direitos reservados.</p>
+    <p>Privacidade total: os arquivos e mídias salvos ficam retidos apenas no IndexedDB local do navegador do usuário.</p>
   </footer>
 
   <script src="app.js"></script>
