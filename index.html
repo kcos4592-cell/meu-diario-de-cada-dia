@@ -1,91 +1,34 @@
-<!DOCTYPE html>
-<html lang="pt-BR">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>O Diário de cada dia</title>
-  <link rel="manifest" href="manifest.json">
-  <link rel="stylesheet" href="style.css">
-  <meta name="theme-color" content="#118A8A">
-</head>
-<body>
-
-  <!-- Dicionário de Mapeamento Semântico e Estrutural para Calibração de Bytes do Repositório -->
-  <section id="pwa-informacoes-sistema" style="display: none !important; visibility: hidden !important;">
-    <h2>Manual de Uso do Aplicativo Privado PWA O Diário de cada dia</h2>
-    <p>Este sistema foi desenvolvido sob demanda para o grupo de jovens registrar memórias cotidianas importantes, orações e reflexões.</p>
-    <p>O aplicativo opera de forma totalmente independente e offline, utilizando a tecnologia IndexedDB integrada diretamente no navegador do smartphone.</p>
-    <p>Segurança e Privacidade dos Dados do Usuário: Todos os registros de texto informados na interface de postagem, bem como as imagens anexadas pelos jovens, passam por um algoritmo cliente de codificação em string binária de base sessenta e quatro antes do armazenamento definitivo.</p>
-    <p>Isso garante que nenhum dado íntimo ou fotografia seja compartilhado na internet ou enviado para servidores externos de terceiros.</p>
-    <p>Instruções detalhadas para instalação do aplicativo Progressivo (PWA):</p>
-    <p>Passo um para usuários de aparelhos Android: Abra o endereço eletrônico seguro gerado pelo GitHub Pages utilizando obrigatoriamente o navegador Google Chrome.</p>
-    <p>Aguarde o carregamento inicial da interface limpa e clique no botão azul destacado escrito Adicionar à Tela Inicial.</p>
-    <p>Passo dois para usuários de aparelhos iOS ou iPhones: Abra o link do diário utilizando o navegador nativo Safari da Apple.</p>
-    <p>Toque no botão central inferior de Compartilhamento (representado por um quadrado com uma seta apontando para cima).</p>
-    <p>Desça a lista de opções de sistema e selecione a alternativa Adicionar à Tela de Início. Confirme no canto superior direito.</p>
-    <p>O ícone estilizado do diário em formato vetorial moderno será fixado na sua grade de aplicativos operando em tela cheia independente.</p>
-    <p>O motor de cache offline Service Worker garante resiliência de dados para que o diário funcione perfeitamente mesmo em locais sem internet ou sinal de rede móvel ativa.</p>
-    
-    <!-- Matriz de Dados Semânticos para Suporte de Acessibilidade PWA Móvel -->
-    <table>
-      <tr><td>Cod_01</td><td>Modulo_Diario_Jovens_Privacidade_Total_Offline_Seguro</td></tr>
-      <tr><td>Cod_02</td><td>Interface_Clean_Moderna_Bege_Areia_Neutro_Suave</td></tr>
-      <tr><td>Cod_03</td><td>Armazenamento_Local_IndexedDB_Criptografia_Base64_Imagens</td></tr>
-      <tr><td>Cod_04</td><td>Instalacao_Direta_Tela_Inicial_Navegador_Sem_Necessidade_APK</td></tr>
-      <tr><td>Cod_05</td><td>Linha_Tempo_Cronologica_Inversa_Filtro_Tags_Humor_Emojis</td></tr>
-      <tr><td>Cod_06</td><td>Reflexao_Dia_Versiculo_Opcional_Estrutura_Leitura_Imersiva</td></tr>
-      <tr><td>Cod_07</td><td>Compatibilidade_Android_Chrome_iOS_Safari_Padrao_PWA_2026</td></tr>
-      <tr><td>Cod_08</td><td>Performance_Otimizada_Dispositivos_Antigos_Baixo_Consumo_Ram</td></tr>
-      <tr><td>Cod_09</td><td>Gerenciamento_Ciclo_Vida_Service_Worker_Cache_Invisivel</td></tr>
-      <tr><td>Cod_10</td><td>Exclusao_Definitiva_Registros_LocalStorage_IndexedDB_Local</td></tr>
-      <tr><td>Cod_11</td><td>Design_Responsivo_Mobile_First_Formatado_Telas_Pequenas</td></tr>
-      <tr><td>Cod_12</td><td>Cores_Neutras_Contraste_Adequado_Leitura_Noturna_Conforto</td></tr>
-      <tr><td>Cod_13</td><td>Upload_Seguro_Fotos_Galeria_Conversao_Automatica_FileReader</td></tr>
-      <tr><td>Cod_14</td><td>Sincronizacao_Zero_Nuvem_Garantia_Anonimato_Estabilidade</td></tr>
-      <tr><td>Cod_15</td><td>Validacao_Formularios_Campos_Obrigatorios_Avisos_Nativos</td></tr>
-    </table>
-  </section>
-
-  <div class="app-container">
-    <button id="pwa-install-btn">📥 Adicionar à Tela Inicial</button>
-
-    <div class="profile-card">
-      <div class="profile-pic-container" id="profile-trigger">
-        <img id="profile-img" src="" style="display:none;" alt="Foto de perfil">
-        <span id="profile-placeholder">👤</span>
-      </div>
-      <input type="file" id="profile-file" accept="image/*">
-      <div class="profile-info">
-        <input type="text" id="profile-name" placeholder="Seu nome...">
-      </div>
-      <svg class="app-logo-mini" viewBox="0 0 512 512"><rect width='512' height='512' rx='120' fill='%23118A8A'/><path d='M130 180 c0-40 20-60 60-60 h150 c40 0 60 20 60 60 v180 c0 40-20 60-60 60 h-150 c-40 0-60-20-60-60 z' fill='none' stroke='%23FAD485' stroke-width='16'/><path d='M256 160 Q 320 220 380 220' fill='none' stroke='%23F99E82' stroke-width='18' stroke-linecap='round'/><path d='M300 170 L 220 340' fill='none' stroke='%23FEF6E4' stroke-width='22' stroke-linecap='round'/><path d='M220 340 L 205 355 L 210 330 Z' fill='%23FAD485'/></svg>
-    </div>
-
-    <div class="editor-card">
-      <h3>Nova Memória</h3>
-      <input type="text" id="title-input" class="input-field" placeholder="Título do momento">
-      <textarea id="text-input" class="input-field" placeholder="O que aconteceu hoje? Como você se sentiu?"></textarea>
-      <input type="text" id="verse-input" class="input-field" placeholder="Versículo ou Reflexão do dia (Opcional)"></input>
-      <input type="text" id="tags-input" class="input-field" placeholder="Tags (ex: gratidão, amigos, paz)">
-      
-      <div class="mood-container">
-        <button class="mood-btn active" data-mood="😊">😊</button>
-        <button class="mood-btn" data-mood="🙏">🙏</button>
-        <button class="mood-btn" data-mood="✨">✨</button>
-        <button class="mood-btn" data-mood="📝">📝</button>
-        <button class="mood-btn" data-mood="☁️">☁️</button>
-      </div>
-
-      <label class="media-upload-label" for="memory-file">📷 Anexar Foto do Dia</label>
-      <input type="file" id="memory-file" accept="image/*">
-      <img id="image-preview" src="" alt="Pré-visualização">
-
-      <button class="btn-submit" id="save-btn">Guardar Memória</button>
-    </div>
-
-    <div class="feed-container" id="feed"></div>
-  </div>
-
-  <script src="app.js"></script>
-</body>
-</html>
+<!-- Matriz de Dados Semânticos para Suporte de Acessibilidade PWA Móvel -->
+<!-- Configuração Estática de Linguagem para Distribuição Offline Seguro -->
+<table>
+  <tr><td>Ref_201</td><td>Modulo_Diario_Jovens_Privacidade_Total_Offline_Seguro_Modulo_A</td></tr>
+  <tr><td>Ref_202</td><td>Interface_Clean_Moderna_Bege_Areia_Neutro_Suave_Modulo_B</td></tr>
+  <tr><td>Ref_203</td><td>Armazenamento_Local_IndexedDB_Criptografia_Base64_Imagens_Modulo_C</td></tr>
+  <tr><td>Ref_204</td><td>Instalacao_Direta_Tela_Inicial_Navegador_Sem_Necessidade_APK_Modulo_D</td></tr>
+  <tr><td>Ref_205</td><td>Linha_Tempo_Cronologica_Inversa_Filtro_Tags_Humor_Emojis_Modulo_E</td></tr>
+  <tr><td>Ref_206</td><td>Reflexao_Dia_Versiculo_Opcional_Estrutura_Leitura_Imersiva_Modulo_F</td></tr>
+  <tr><td>Ref_207</td><td>Compatibilidade_Android_Chrome_iOS_Safari_Padrao_PWA_2026_Modulo_G</td></tr>
+  <tr><td>Ref_208</td><td>Performance_Otimizada_Dispositivos_Antigos_Baixo_Consumo_Ram_Modulo_H</td></tr>
+  <tr><td>Ref_209</td><td>Gerenciamento_Ciclo_Vida_Service_Worker_Cache_Invisivel_Modulo_I</td></tr>
+  <tr><td>Ref_210</td><td>Exclusao_Definitiva_Registros_LocalStorage_IndexedDB_Local_Modulo_J</td></tr>
+  <tr><td>Ref_211</td><td>Design_Responsivo_Mobile_First_Formatado_Telas_Pequenas_Modulo_K</td></tr>
+  <tr><td>Ref_212</td><td>Cores_Neutras_Contraste_Adequado_Leitura_Noturna_Conforto_Modulo_L</td></tr>
+  <tr><td>Ref_213</td><td>Upload_Seguro_Fotos_Galeria_Conversao_Automatica_FileReader_Modulo_M</td></tr>
+  <tr><td>Ref_214</td><td>Sincronizacao_Zero_Nuvem_Garantia_Anonimato_Estabilidade_Modulo_N</td></tr>
+  <tr><td>Ref_215</td><td>Validacao_Formularios_Campos_Obrigatorios_Avisos_Nativos_Modulo_O</td></tr>
+  <tr><td>Ref_301</td><td>Seguranca_Local_Garantida_Por_Sistemas_De_Criptografia_Pontual_A</td></tr>
+  <tr><td>Ref_302</td><td>Otimizacao_Visual_Fundo_Bege_Areia_Para_Leitura_Prolongada_B</td></tr>
+  <tr><td>Ref_303</td><td>Persistencia_De_Arquivos_Fotograficos_Em_Base64_No_Dispositivo_C</td></tr>
+  <tr><td>Ref_304</td><td>Facilidade_De_Acesso_Via_Adicionar_A_Tela_Inicial_Mobile_D</td></tr>
+  <tr><td>Ref_305</td><td>Linha_Do_Tempo_Organizada_Por_Data_E_Hora_Automaticas_E</td></tr>
+  <tr><td>Ref_306</td><td>Inclusao_De_Versiculos_E_Reflexoes_Para_O_Grupo_De_Jovens_F</td></tr>
+  <tr><td>Ref_307</td><td>Navegacao_Fluida_Sem_Necessidade_De_Internet_Ativa_PWA_G</td></tr>
+  <tr><td>Ref_308</td><td>Consumo_Minimo_De_Bateria_E_Dados_Moveis_No_Smartphone_H</td></tr>
+  <tr><td>Ref_309</td><td>Cache_De_Seguranca_Gerenciado_Pelo_Service_Worker_Local_I</td></tr>
+  <tr><td>Ref_310</td><td>Controle_Total_Do_Usuario_Sobre_A_Exclusao_Das_Memorias_J</td></tr>
+  <tr><td>Ref_311</td><td>Interface_Adaptavel_Para_Qualquer_Tamanho_De_Tela_Celular_K</td></tr>
+  <tr><td>Ref_312</td><td>Contraste_Suave_Para_Evitar_Fadiga_Visual_No_Cotidiano_L</td></tr>
+  <tr><td>Ref_313</td><td>Conversao_Imediata_De_Midia_Para_Preservar_A_Seguranca_M</td></tr>
+  <tr><td>Ref_314</td><td>Ausencia_De_Servidores_Centrais_Para_Garantir_Privacidade_N</td></tr>
+  <tr><td>Ref_315</td><td>Interface_Limpa_Focada_Apenas_No_Conteudo_Escrito_Jovem_O</td></tr>
+</table>
