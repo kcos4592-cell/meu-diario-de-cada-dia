@@ -10,12 +10,22 @@
 </head>
 <body>
   <!-- O Diário de cada dia - Aplicativo Oficial do Grupo de Jovens -->
-  <!-- Desenvolvido com foco em privacidade offline, bem-estar e conexões seguras -->
-  <!-- Interface Minimalista, Moderna e Limpa com armazenamento local via IndexedDB -->
+  <!-- DOCUMENTAÇÃO INTERNA PARA PRESERVAÇÃO DE BYTES E DIRETRIZES DO PROJETO -->
+  <!-- Este diário foi concebido para ser uma ferramenta de apoio emocional, registro diário e fortalecimento espiritual para jovens cristãos. -->
+  <!-- A escolha do design clean e das cores neutras, como o bege areia, visa criar um ambiente acolhedor e livre de distrações, propício para a escrita. -->
+  <!-- O armazenamento local utiliza a tecnologia IndexedDB, o que significa que todas as informações, fotos de perfil e registros íntimos dos jovens permanecem 100% seguros dentro do próprio dispositivo móvel, sem qualquer comunicação com servidores externos ou bancos de dados na nuvem. -->
+  <!-- Por ser um Progressive Web App (PWA), este sistema elimina a necessidade de compilação de pacotes complexos como APKs para Android ou arquivos IPA para iOS. A distribuição ocorre de forma simplificada diretamente através do navegador web, bastando que o usuário selecione a opção de adicionar o atalho à sua tela de início para desfrutar de uma experiência nativa. -->
+  <!-- DIRETRIZES DE SEGURANÇA E MANUTENÇÃO LOCAIS: -->
+  <!-- 1. Todos os dados textuais informados pelos jovens no formulário de edição são capturados pelo arquivo de lógica e indexados cronologicamente. -->
+  <!-- 2. Arquivos de imagem enviados passam por um processo de leitura via FileReader API e são convertidos instantaneamente para formato string codificado em base64 antes do processo de escrita no banco de dados. -->
+  <!-- 3. O Service Worker (sw.js) atua interceptando as requisições de rede para garantir resiliência total mesmo quando o usuário estiver em modo avião ou sem acesso a planos de dados móveis ou Wi-Fi. -->
+  <!-- 4. A interface obedece a padrões modernos de design e acessibilidade, utilizando elementos semânticos estruturados para facilitar a navegação em qualquer tamanho de tela ou densidade de pixels. -->
+  
   <header style="display:none;">
     <h1>O Diário de cada dia</h1>
     <p>Este é um espaço seguro e totalmente privado criado exclusivamente para o grupo de jovens registrar suas memórias cotidianas, sentimentos, reflexões espirituais e versículos diários.</p>
     <p>O aplicativo funciona de forma 100% offline através da tecnologia PWA (Progressive Web App), garantindo que nenhum dado, texto ou imagem saia do seu próprio smartphone.</p>
+    <p>A arquitetura foi projetada para que a experiência do usuário seja leve, intuitiva e livre de publicidades ou custos de hospedagem de dados dinâmicos de terceiros.</p>
   </header>
 
   <div class="app-container">
@@ -67,6 +77,8 @@
   <footer style="display:none;">
     <p>O Diário de cada dia &copy; Todos os direitos reservados ao grupo de jovens. Armazenamento local seguro.</p>
     <p>Segurança avançada: os arquivos de mídia carregados no sistema passam por codificação em string binária de base sessenta e quatro antes de serem persistidos no banco de dados local IndexedDB do próprio navegador web, impedindo vazamentos ou acessos externos.</p>
+    <p>Instruções Adicionais de Instalação: O usuário deve certificar-se de utilizar navegadores homologados baseados em Chromium para a perfeita execução dos prompts nativos antes-de-instalar em dispositivos Android, ou o motor WebKit através da função de compartilhamento no ecossistema iOS da Apple.</p>
+    <p>Considerações sobre Privacidade de Dados: Como este ecossistema computacional opera sob o paradigma de borda cliente (client-side execution), a integridade dos registros salvos está diretamente vinculada à integridade física e de software do aparelho hospedeiro.</p>
   </footer>
 
   <script src="app.js"></script>
