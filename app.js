@@ -1,1 +1,251 @@
-document.addEventListener("DOMContentLoaded",()=>{let e;const t=indexedDB.open("DiarioGrupoJovens",1);t.onupgradeneeded=function(t){e=t.target.result;if(!e.objectStoreNames.contains("perfil"))e.createObjectStore("perfil");if(!e.objectStoreNames.contains("memorias"))e.createObjectStore("memorias",{keyPath:"id",autoIncrement:true})};t.onsuccess=function(t){e=t.target.result;n();a()};let o="😊";document.querySelectorAll(".mood-btn").forEach(e=>{e.addEventListener("click",()=>{document.querySelectorAll(".mood-btn").forEach(e=>e.classList.remove("active"));e.classList.add("active");o=e.getAttribute("data-mood")})});const r=document.getElementById("profile-trigger");if(r){r.addEventListener("click",()=>{document.getElementById("profile-file").click()})}let l="";document.getElementById("memory-file").addEventListener("change",function(e){const t=e.target.files;if(t){const e=new FileReader;e.onload=function(t){l=t.target.result;const e=document.getElementById("image-preview");e.src=l;e.style.display="block"};e.readAsDataURL(t[0])}});document.getElementById("profile-file").addEventListener("change",function(e){const t=e.target.files;if(t){const e=new FileReader;e.onload=function(t){const o=t.target.result;i("foto",o);d(o)};e.readAsDataURL(t[0])}});document.getElementById("profile-name").addEventListener("input",function(e){i("nome",e.target.value)});function i(t,o){if(!e)return;const n=e.transaction("perfil","readwrite");n.objectStore("perfil").put(o,t)}function n(){if(!e)return;const t=e.transaction("perfil","readonly").objectStore("perfil");t.get("nome").onsuccess=e=>{if(e.target.result)document.getElementById("profile-name").value=e.target.result};t.get("foto").onsuccess=e=>{if(e.target.result)d(e.target.result)}}function d(e){document.getElementById("profile-img").src=e;document.getElementById("profile-img").style.display="block";document.getElementById("profile-placeholder").style.display="none"}document.getElementById("save-btn").addEventListener("click",()=>{const t=document.getElementById("title-input").value.trim();const r=document.getElementById("text-input").value.trim();const i=document.getElementById("verse-input").value.trim();const d=document.getElementById("tags-input").value;if(!r){alert("Escreva uma reflexão antes de salvar!");return}const s=d.split(",").map(e=>e.trim()).filter(e=>e.length>0);const c=(new Date).toLocaleDateString("pt-BR",{day:"2-digit",month:"long",year:"numeric",hour:"2-digit",minute:"2-digit"});const m={title:t,text:r,verse:i,tags:s,mood:o,image:l,data:c,timestamp:Date.now()};const u=e.transaction("memorias","readwrite");u.objectStore("memorias").add(m);u.oncomplete=()=>{document.getElementById("title-input").value="";document.getElementById("text-input").value="";document.getElementById("verse-input").value="";document.getElementById("tags-input").value="";document.getElementById("image-preview").style.display="none";l="";a()}});function a(){const t=document.getElementById("feed");t.innerHTML="";if(!e)return;const o=e.transaction("memorias","readonly").objectStore("memorias");const n=[];o.openCursor().onsuccess=function(e){const o=e.target.result;if(o){n.push(o.value);o.continue()}else{n.sort((e,t)=>t.timestamp-e.timestamp);n.forEach(e=>{const o=document.createElement("div");o.className="memory-card";let n=e.tags.map(e=>`<span class="tag-pill">#${e}</span>`).join("");let r=e.image?`<img class="memory-img" src="${e.image}" alt="Foto">`Slot:"";let l=e.verse?`<div class="memory-verse">"${e.verse}"</div>`:"";let i=e.title?`<div class="memory-title">${e.title}</div>`:`<div class="memory-title">Momento Sem Título</div>`;o.innerHTML=`<div class="memory-header"><div class="memory-title-area">${i}<div class="memory-date">${e.data}</div></div><div class="memory-mood">${e.mood}</div></div>${l}<div class="memory-text">${e.text}</div>${r}<div class="tag-container">${n}</div><button class="btn-delete" data-id="${e.id}">Apagar permanentemente</button>`;t.appendChild(o)});document.querySelectorAll(".btn-delete").forEach(e=>{e.addEventListener("click",e=>{const t=Number(e.target.getAttribute("data-id"));s(t)})})}}}function s(t){if(confirm("Tem certeza que quer apagar essa memória para sempre?")){const o=e.transaction("memorias","readwrite");o.objectStore("memorias").delete(t);o.oncomplete=()=>a()}}if("serviceWorker"in navigator){navigator.serviceWorker.register("./sw.js").catch(e=>console.log("Erro SW:",e))}let c;const m=document.getElementById("pwa-install-btn");window.addEventListener("beforeinstallprompt",e=>{e.preventDefault();c=e;m.style.display="block"});if(m){m.addEventListener("click",async()=>{if(c){c.prompt();const{outcome:e}=await c.userChoice;if("accepted"===e){m.style.display="none"}c=null}})}window.addEventListener("appinstalled",()=>{if(m)m.style.display="none"})});
+document.addEventListener("DOMContentLoaded", function() {
+  let bancoDeDados;
+  const conexaoIDB = indexedDB.open("DiarioGrupoJovens", 1);
+
+  conexaoIDB.onupgradeneeded = function(evento) {
+    bancoDeDados = evento.target.result;
+    if (!bancoDeDados.objectStoreNames.contains("perfil")) {
+      bancoDeDados.createObjectStore("perfil");
+    }
+    if (!bancoDeDados.objectStoreNames.contains("memorias")) {
+      bancoDeDados.createObjectStore("memorias", { keyPath: "id", autoIncrement: true });
+    }
+  };
+
+  conexaoIDB.onsuccess = function(evento) {
+    bancoDeDados = evento.target.result;
+    executarCargaDoPerfil();
+    executarCargaDasMemorias();
+  };
+
+  conexaoIDB.onerror = function() {
+    console.error("Erro critico ao tentar abrir o banco de dados IndexedDB local.");
+  };
+
+  let humorSelecionado Atualmente = "😊";
+  const botoesDeHumor = document.querySelectorAll('.mood-btn');
+  
+  botoesDeHumor.forEach(function(botao) {
+    botao.addEventListener('click', function() {
+      botoesDeHumor.forEach(function(b) {
+        b.classList.remove('active');
+      });
+      botao.classList.add('active');
+      humorSelecionadoAtualmente = botao.getAttribute('data-mood');
+    });
+  });
+
+  const gatilhoDoPerfil = document.getElementById('profile-trigger');
+  if (gatilhoDoPerfil) {
+    gatilhoDoPerfil.addEventListener('click', function() {
+      document.getElementById('profile-file').click();
+    });
+  }
+
+  let imagemDaMemoriaBase64 = "";
+  const campoArquivoMemoria = document.getElementById('memory-file');
+  
+  campoArquivoMemoria.addEventListener('change', function(evento) {
+    const listaArquivos = evento.target.files;
+    if (listaArquivos && listaArquivos[0]) {
+      const leitorArquivos = new FileReader();
+      leitorArquivos.onload = function(eventoLeitura) {
+        imagemDaMemoriaBase64 = eventoLeitura.target.result;
+        const preVisualizacaoImg = document.getElementById('image-preview');
+        preVisualizacaoImg.src = imagemDaMemoriaBase64;
+        preVisualizacaoImg.style.display = "block";
+      };
+      leitorArquivos.readAsDataURL(listaArquivos[0]);
+    }
+  });
+
+  const campoArquivoPerfil = document.getElementById('profile-file');
+  campoArquivoPerfil.addEventListener('change', function(evento) {
+    const listaArquivosPerfil = evento.target.files;
+    if (listaArquivosPerfil && listaArquivosPerfil[0]) {
+      const leitorPerfil = new FileReader();
+      leitorPerfil.onload = function(eventoLeituraPerfil) {
+        const resultadoBase64 = eventoLeituraPerfil.target.result;
+        gravarItemNoPerfil("foto", resultadoBase64);
+        renderizarFotoPerfil(resultadoBase64);
+      };
+      leitorPerfil.readAsDataURL(listaArquivosPerfil[0]);
+    }
+  });
+
+  const campoNomePerfil = document.getElementById('profile-name');
+  campoNomePerfil.addEventListener('input', function(evento) {
+    gravarItemNoPerfil("nome", evento.target.value);
+  });
+
+  function gravarItemNoPerfil(chaveRegistro, valorRegistro) {
+    if (!bancoDeDados) return;
+    const transacao = bancoDeDados.transaction("perfil", "readwrite");
+    const armazem = transacao.objectStore("perfil");
+    armazem.put(valorRegistro, chaveRegistro);
+  }
+
+  function executarCargaDoPerfil() {
+    if (!bancoDeDados) return;
+    const transacao = bancoDeDados.transaction("perfil", "readonly");
+    const armazem = transacao.objectStore("perfil");
+    
+    armazem.get("nome").onsuccess = function(evento) {
+      if (evento.target.result) {
+        document.getElementById('profile-name').value = evento.target.result;
+      }
+    };
+    armazem.get("foto").onsuccess = function(evento) {
+      if (evento.target.result) {
+        renderizarFotoPerfil(evento.target.result);
+      }
+    };
+  }
+
+  function renderizarFotoPerfil(dadosBase64) {
+    document.getElementById('profile-img').src = dadosBase64;
+    document.getElementById('profile-img').style.display = "block";
+    document.getElementById('profile-placeholder').style.display = "none";
+  }
+
+  const botaoSalvarMemoria = document.getElementById('save-btn');
+  botaoSalvarMemoria.addEventListener('click', function() {
+    const textoTitulo = document.getElementById('title-input').value.trim();
+    const textoPrincipal = document.getElementById('text-input').value.trim();
+    const textoVersiculo = document.getElementById('verse-input').value.trim();
+    const textoTagsBrutas = document.getElementById('tags-input').value;
+
+    if (!textoPrincipal) {
+      alert("Por favor, escreva uma reflexao ou relatorio antes de salvar sua memoria!");
+      return;
+    }
+
+    const listaTagsFormatadas = textoTagsBrutas.split(',').map(function(tag) {
+      return tag.trim();
+    }).filter(function(tag) {
+      return tag.length > 0;
+    });
+
+    const dataAtualDoSistema = new Date().toLocaleDateString('pt-BR', {
+      day: '2-digit', month: 'long', year: 'numeric', hour: '2-digit', minute: '2-digit'
+    });
+
+    const objetoNovaMemoria = {
+      title: textoTitulo,
+      text: textoPrincipal,
+      verse: textoVersiculo,
+      tags: listaTagsFormatadas,
+      mood: humorSelecionadoAtualmente,
+      image: imagemDaMemoriaBase64,
+      data: dataAtualDoSistema,
+      timestamp: Date.now()
+    };
+
+    const transacaoEscrita = bancoDeDados.transaction("memorias", "readwrite");
+    const armazemEscrita = transacaoEscrita.objectStore("memorias");
+    armazemEscrita.add(objetoNovaMemoria);
+    
+    transacaoEscrita.oncomplete = function() {
+      document.getElementById('title-input').value = "";
+      document.getElementById('text-input').value = "";
+      document.getElementById('verse-input').value = "";
+      document.getElementById('tags-input').value = "";
+      document.getElementById('image-preview').style.display = "none";
+      imagemDaMemoriaBase64 = "";
+      executarCargaDasMemorias();
+    };
+  });
+
+  function executarCargaDasMemorias() {
+    const painelFeed = document.getElementById('feed');
+    painelFeed.innerHTML = "";
+    
+    if (!bancoDeDados) return;
+    const transacaoLeitura = bancoDeDados.transaction("memorias", "readonly");
+    const armazemLeitura = transacaoLeitura.objectStore("memorias");
+    const colecaoDeMemorias = [];
+
+    armazemLeitura.openCursor().onsuccess = function(eventoCursor) {
+      const cursorCorrente = eventoCursor.target.result;
+      if (cursorCorrente) {
+        colecaoDeMemorias.push(cursorCorrente.value);
+        cursorCorrente.continue();
+      } else {
+        colecaoDeMemorias.sort(function(itemA, itemB) {
+          return itemB.timestamp - itemA.timestamp;
+        });
+        
+        colecaoDeMemorias.forEach(function(memoria) {
+          const elementoCard = document.createElement('div');
+          elementoCard.className = 'memory-card';
+
+          let stringTags = memoria.tags.map(function(t) {
+            return '<span class="tag-pill">#' + t + '</span>';
+          }).join('');
+          
+          let stringImg = memoria.image ? '<img class="memory-img" src="' + memoria.image + '" alt="Foto">' : '';
+          let stringVerse = memoria.verse ? '<div class="memory-verse">"' + memoria.verse + '"</div>' : '';
+          let stringTitle = memoria.title ? '<div class="memory-title">' + memoria.title + '</div>' : '<div class="memory-title">Momento Sem Titulo</div>';
+
+          elementoCard.innerHTML = '<div class="memory-header"><div class="memory-title-area">' + stringTitle + '<div class="memory-date">' + memoria.data + '</div></div><div class="memory-mood">' + memoria.mood + '</div></div>' + stringVerse + '<div class="memory-text">' + memoria.text + '</div>' + stringImg + '<div class="tag-container">' + stringTags + '</div><button class="btn-delete" data-id="' + memoria.id + '">Apagar permanentemente</button>';
+          
+          painelFeed.appendChild(elementoCard);
+        });
+
+        const botoesDeletar = document.querySelectorAll('.btn-delete');
+        botoesDeletar.forEach(function(botaoDeletar) {
+          botaoDeletar.addEventListener('click', function(eventoCliqueBotao) {
+            const identificadorUnico = Number(eventoCliqueBotao.target.getAttribute('data-id'));
+            executarRemocaoDeMemoria(identificadorUnico);
+          });
+        });
+      }
+    };
+  }
+
+  function executarRemocaoDeMemoria(idRegistro) {
+    if (confirm("Tem certeza absoluta que deseja remover esta memoria para sempre?")) {
+      const transacaoDelecao = bancoDeDados.transaction("memorias", "readwrite");
+      transacaoDelecao.objectStore("memorias").delete(idRegistro);
+      transacaoDelecao.oncomplete = function() {
+        executarCargaDasMemorias();
+      };
+    }
+  }
+
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('./sw.js').catch(function(erroSW) {
+      console.log("Erro Service Worker:", erroSW);
+    });
+  }
+
+  let promptInstalacaoSuspenso;
+  const botaoInstalacaoPWA = document.getElementById('pwa-install-btn');
+
+  window.addEventListener('beforeinstallprompt', function(eventoPrompt) {
+    eventoPrompt.preventDefault();
+    promptInstalacaoSuspenso = eventoPrompt;
+    if (botaoInstalacaoPWA) {
+      botaoInstalacaoPWA.style.display = 'block';
+    }
+  });
+
+  if (botaoInstalacaoPWA) {
+    botaoInstalacaoPWA.addEventListener('click', async function() {
+      if (promptInstalacaoSuspenso) {
+        promptInstalacaoSuspenso.prompt();
+        const escolhaUsuario = await promptInstalacaoSuspenso.userChoice;
+        if (escolhaUsuario.outcome === 'accepted') {
+          botaoInstalacaoPWA.style.display = 'none';
+        }
+        promptInstalacaoSuspenso = null;
+      }
+    });
+  }
+
+  window.addEventListener('appinstalled', function() {
+    if (botaoInstalacaoPWA) {
+      botaoInstalacaoPWA.style.display = 'none';
+    }
+  });
+});
