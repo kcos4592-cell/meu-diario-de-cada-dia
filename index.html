@@ -1,1 +1,240 @@
-HTML PLACEHOLDER
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>O Diário de cada dia</title>
+  <link rel="manifest" href="manifest.json">
+  <link rel="stylesheet" href="style.css">
+  <meta name="theme-color" content="#118A8A">
+</head>
+<body>
+
+  <div class="app-container">
+    <button id="pwa-install-btn">📥 Adicionar à Tela Inicial</button>
+
+    <!-- Topo Perfil -->
+    <div class="profile-card">
+      <div class="profile-pic-container" onclick="document.getElementById('profile-file').click()">
+        <img id="profile-img" src="" style="display:none;" alt="Foto de perfil">
+        <span id="profile-placeholder">👤</span>
+      </div>
+      <input type="file" id="profile-file" accept="image/*">
+      <div class="profile-info">
+        <input type="text" id="profile-name" placeholder="Seu nome...">
+      </div>
+      <!-- Logo do App SVG integrado -->
+      <svg class="app-logo-mini" viewBox="0 0 512 512"><rect width='512' height='512' rx='120' fill='%23118A8A'/><path d='M130 180 c0-40 20-60 60-60 h150 c40 0 60 20 60 60 v180 c0 40-20 60-60 60 h-150 c-40 0-60-20-60-60 z' fill='none' stroke='%23FAD485' stroke-width='16'/><path d='M256 160 Q 320 220 380 220' fill='none' stroke='%23F99E82' stroke-width='18' stroke-linecap='round'/><path d='M300 170 L 220 340' fill='none' stroke='%23FEF6E4' stroke-width='22' stroke-linecap='round'/><path d='M220 340 L 205 355 L 210 330 Z' fill='%23FAD485'/></svg>
+    </div>
+
+    <!-- Criar Memória -->
+    <div class="editor-card">
+      <h3>Nova Memória</h3>
+      <input type="text" id="title-input" class="input-field" placeholder="Título do momento">
+      <textarea id="text-input" class="input-field" placeholder="O que aconteceu hoje? Como você se sentiu?"></textarea>
+      <input type="text" id="verse-input" class="input-field" placeholder="Versículo ou Reflexão do dia (Opcional)">
+      <input type="text" id="tags-input" class="input-field" placeholder="Tags (ex: gratidão, amigos, paz)">
+      
+      <div class="mood-container">
+        <button class="mood-btn active" data-mood="😊">😊</button>
+        <button class="mood-btn" data-mood="🙏">🙏</button>
+        <button class="mood-btn" data-mood="✨">✨</button>
+        <button class="mood-btn" data-mood="📝">📝</button>
+        <button class="mood-btn" data-mood="☁️">☁️</button>
+      </div>
+
+      <label class="media-upload-label" for="memory-file">
+        📷 Anexar Foto do Dia
+      </label>
+      <input type="file" id="memory-file" accept="image/*">
+      <img id="image-preview" src="" alt="Pré-visualização">
+
+      <button class="btn-submit" id="save-btn">Guardar Memória</button>
+    </div>
+
+    <!-- Feed de Memórias -->
+    <div class="feed-container" id="feed"></div>
+  </div>
+
+  <!-- Script movido e protegido para carregar apenas após a leitura do HTML -->
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      let db;
+      const request = indexedDB.open("DiarioGrupoJovens", 1);
+
+      request.onupgradeneeded = function(e) {
+        db = e.target.result;
+        if (!db.objectStoreNames.contains("perfil")) db.createObjectStore("perfil");
+        if (!db.objectStoreNames.contains("memorias")) db.createObjectStore("memorias", { keyPath: "id", autoIncrement: true });
+      };
+
+      request.onsuccess = function(e) {
+        db = e.target.result;
+        carregarPerfil();
+        carregarMemorias();
+      };
+
+      request.onerror = function() {
+        console.error("Erro ao abrir o banco de dados.");
+      };
+
+      let selectedMood = "😊";
+      document.querySelectorAll('.mood-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          document.querySelectorAll('.mood-btn').forEach(b => b.classList.remove('active'));
+          btn.classList.add('active');
+          selectedMood = btn.getAttribute('data-mood');
+        });
+      });
+
+      let base64MemoryImg = "";
+      document.getElementById('memory-file').addEventListener('change', function(e) {
+        const file = e.target.files[0];
+        if (file) {
+          const reader = new FileReader();
+          reader.onload = function(event) {
+            base64MemoryImg = event.target.result;
+            const imgPreview = document.getElementById('image-preview');
+            imgPreview.src = base64MemoryImg;
+            imgPreview.style.display = "block";
+          };
+          reader.readAsDataURL(file);
+        }
+      });
+
+      document.getElementById('profile-file').addEventListener('change', function(e) {
+        const file = e.target.files[0];
+        if (file) {
+          const reader = new FileReader();
+          reader.onload = function(event) {
+            const base64Img = event.target.result;
+            salvarPerfilItem("foto", base64Img);
+            mostrarFotoPerfil(base64Img);
+          };
+          reader.readAsDataURL(file);
+        }
+      });
+
+      document.getElementById('profile-name').addEventListener('input', function(e) {
+        salvarPerfilItem("nome", e.target.value);
+      });
+
+      function salvarPerfilItem(chave, valor) {
+        if (!db) return;
+        const tx = db.transaction("perfil", "readwrite");
+        tx.objectStore("perfil").put(valor, chave);
+      }
+
+      function carregarPerfil() {
+        if (!db) return;
+        const tx = db.transaction("perfil", "readonly");
+        const store = tx.objectStore("perfil");
+        
+        store.get("nome").onsuccess = (e) => {
+          if(e.target.result) document.getElementById('profile-name').value = e.target.result;
+        };
+        store.get("foto").onsuccess = (e) => {
+          if(e.target.result) mostrarFotoPerfil(e.target.result);
+        };
+      }
+
+      function mostrarFotoPerfil(base64) {
+        document.getElementById('profile-img').src = base64;
+        document.getElementById('profile-img').style.display = "block";
+        document.getElementById('profile-placeholder').style.display = "none";
+      }
+
+      document.getElementById('save-btn').addEventListener('click', () => {
+        const title = document.getElementById('title-input').value.trim();
+        const text = document.getElementById('text-input').value.trim();
+        const verse = document.getElementById('verse-input').value.trim();
+        const tagsRaw = document.getElementById('tags-input').value;
+
+        if (!text) {
+          alert("Escreva uma reflexão antes de salvar!");
+          return;
+        }
+
+        const tags = tagsRaw.split(',').map(t => t.trim()).filter(t => t.length > 0);
+        const dataCriacao = new Date().toLocaleDateString('pt-BR', { day: '2-digit', month: 'long', year: 'numeric', hour: '2-digit', minute:'2-digit' });
+
+        const novaMemoria = { title, text, verse, tags, mood: selectedMood, image: base64MemoryImg, data: dataCriacao, timestamp: Date.now() };
+
+        const tx = db.transaction("memorias", "readwrite");
+        tx.objectStore("memorias").add(novaMemoria);
+        
+        tx.oncomplete = () => {
+          document.getElementById('title-input').value = "";
+          document.getElementById('text-input').value = "";
+          document.getElementById('verse-input').value = "";
+          document.getElementById('tags-input').value = "";
+          document.getElementById('image-preview').style.display = "none";
+          base64MemoryImg = "";
+          carregarMemorias();
+        };
+      });
+
+      function carregarMemorias() {
+        const feed = document.getElementById('feed');
+        feed.innerHTML = "";
+        
+        if (!db) return;
+        const tx = db.transaction("memorias", "readonly");
+        const store = tx.objectStore("memorias");
+        const memorias = [];
+
+        store.openCursor().onsuccess = function(e) {
+          const cursor = e.target.result;
+          if (cursor) {
+            memorias.push(cursor.value);
+            cursor.continue();
+          } else {
+            memorias.sort((a, b) => b.timestamp - a.timestamp);
+            memorias.forEach(mem => {
+              const card = document.createElement('div');
+              card.className = 'memory-card';
+
+              let tagHTML = mem.tags.map(t => `<span class="tag-pill">#${t}</span>`).join('');
+              let imgHTML = mem.image ? `<img class="memory-img" src="${mem.image}" alt="Foto da memória">` : '';
+              let verseHTML = mem.verse ? `<div class="memory-verse">"${mem.verse}"</div>` : '';
+              let titleHTML = mem.title ? `<div class="memory-title">${mem.title}</div>` : `<div class="memory-title">Momento Sem Título</div>`;
+
+              card.innerHTML = `
+                <div class="memory-header">
+                  <div class="memory-title-area">
+                    ${titleHTML}
+                    <div class="memory-date">${mem.data}</div>
+                  </div>
+                  <div class="memory-mood">${mem.mood}</div>
+                </div>
+                ${verseHTML}
+                <div class="memory-text">${mem.text}</div>
+                ${imgHTML}
+                <div class="tag-container">${tagHTML}</div>
+                <button class="btn-delete" data-id="${mem.id}">Apagar permanentemente</button>
+              `;
+              feed.appendChild(card);
+            });
+
+            document.querySelectorAll('.btn-delete').forEach(btn => {
+              btn.addEventListener('click', (el) => {
+                const id = Number(el.target.getAttribute('data-id'));
+                deletarMemoria(id);
+              });
+            });
+          }
+        };
+      }
+
+      function deletarMemoria(id) {
+        if (confirm("Tem certeza que quer apagar essa memória para sempre?")) {
+          const tx = db.transaction("memorias", "readwrite");
+          tx.objectStore("memorias").delete(id);
+          tx.oncomplete = () => carregarMemorias();
+        }
+      }
+
+      if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.register('./sw.js').catch(err => console.log("Erro SW:", err));
+      }
+
