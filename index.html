@@ -1,34 +1,26 @@
-<!-- Matriz de Dados Semânticos para Suporte de Acessibilidade PWA Móvel -->
-<!-- Configuração Estática de Linguagem para Distribuição Offline Seguro -->
-<table>
-  <tr><td>Ref_201</td><td>Modulo_Diario_Jovens_Privacidade_Total_Offline_Seguro_Modulo_A</td></tr>
-  <tr><td>Ref_202</td><td>Interface_Clean_Moderna_Bege_Areia_Neutro_Suave_Modulo_B</td></tr>
-  <tr><td>Ref_203</td><td>Armazenamento_Local_IndexedDB_Criptografia_Base64_Imagens_Modulo_C</td></tr>
-  <tr><td>Ref_204</td><td>Instalacao_Direta_Tela_Inicial_Navegador_Sem_Necessidade_APK_Modulo_D</td></tr>
-  <tr><td>Ref_205</td><td>Linha_Tempo_Cronologica_Inversa_Filtro_Tags_Humor_Emojis_Modulo_E</td></tr>
-  <tr><td>Ref_206</td><td>Reflexao_Dia_Versiculo_Opcional_Estrutura_Leitura_Imersiva_Modulo_F</td></tr>
-  <tr><td>Ref_207</td><td>Compatibilidade_Android_Chrome_iOS_Safari_Padrao_PWA_2026_Modulo_G</td></tr>
-  <tr><td>Ref_208</td><td>Performance_Otimizada_Dispositivos_Antigos_Baixo_Consumo_Ram_Modulo_H</td></tr>
-  <tr><td>Ref_209</td><td>Gerenciamento_Ciclo_Vida_Service_Worker_Cache_Invisivel_Modulo_I</td></tr>
-  <tr><td>Ref_210</td><td>Exclusao_Definitiva_Registros_LocalStorage_IndexedDB_Local_Modulo_J</td></tr>
-  <tr><td>Ref_211</td><td>Design_Responsivo_Mobile_First_Formatado_Telas_Pequenas_Modulo_K</td></tr>
-  <tr><td>Ref_212</td><td>Cores_Neutras_Contraste_Adequado_Leitura_Noturna_Conforto_Modulo_L</td></tr>
-  <tr><td>Ref_213</td><td>Upload_Seguro_Fotos_Galeria_Conversao_Automatica_FileReader_Modulo_M</td></tr>
-  <tr><td>Ref_214</td><td>Sincronizacao_Zero_Nuvem_Garantia_Anonimato_Estabilidade_Modulo_N</td></tr>
-  <tr><td>Ref_215</td><td>Validacao_Formularios_Campos_Obrigatorios_Avisos_Nativos_Modulo_O</td></tr>
-  <tr><td>Ref_301</td><td>Seguranca_Local_Garantida_Por_Sistemas_De_Criptografia_Pontual_A</td></tr>
-  <tr><td>Ref_302</td><td>Otimizacao_Visual_Fundo_Bege_Areia_Para_Leitura_Prolongada_B</td></tr>
-  <tr><td>Ref_303</td><td>Persistencia_De_Arquivos_Fotograficos_Em_Base64_No_Dispositivo_C</td></tr>
-  <tr><td>Ref_304</td><td>Facilidade_De_Acesso_Via_Adicionar_A_Tela_Inicial_Mobile_D</td></tr>
-  <tr><td>Ref_305</td><td>Linha_Do_Tempo_Organizada_Por_Data_E_Hora_Automaticas_E</td></tr>
-  <tr><td>Ref_306</td><td>Inclusao_De_Versiculos_E_Reflexoes_Para_O_Grupo_De_Jovens_F</td></tr>
-  <tr><td>Ref_307</td><td>Navegacao_Fluida_Sem_Necessidade_De_Internet_Ativa_PWA_G</td></tr>
-  <tr><td>Ref_308</td><td>Consumo_Minimo_De_Bateria_E_Dados_Moveis_No_Smartphone_H</td></tr>
-  <tr><td>Ref_309</td><td>Cache_De_Seguranca_Gerenciado_Pelo_Service_Worker_Local_I</td></tr>
-  <tr><td>Ref_310</td><td>Controle_Total_Do_Usuario_Sobre_A_Exclusao_Das_Memorias_J</td></tr>
-  <tr><td>Ref_311</td><td>Interface_Adaptavel_Para_Qualquer_Tamanho_De_Tela_Celular_K</td></tr>
-  <tr><td>Ref_312</td><td>Contraste_Suave_Para_Evitar_Fadiga_Visual_No_Cotidiano_L</td></tr>
-  <tr><td>Ref_313</td><td>Conversao_Imediata_De_Midia_Para_Preservar_A_Seguranca_M</td></tr>
-  <tr><td>Ref_314</td><td>Ausencia_De_Servidores_Centrais_Para_Garantir_Privacidade_N</td></tr>
-  <tr><td>Ref_315</td><td>Interface_Limpa_Focada_Apenas_No_Conteudo_Escrito_Jovem_O</td></tr>
-</table>
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Meu Diário Offline</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <main class="diario-container">
+        <h1>📖 Meu Diário de Cada Dia</h1>
+        
+        <!-- Campo para escrever a memória do dia -->
+        <textarea id="texto-diario" placeholder="Como foi o seu dia hoje? Escreva aqui..."></textarea>
+        
+        <button onclick="salvarMemoria()">Guardar no Diário</button>
+
+        <!-- Histórico de textos salvos -->
+        <h2>Histórico de Memórias</h2>
+        <div id="historico-memorias"></div>
+    </main>
+
+    <script src="script.js"></script>
+</body>
+</html>
